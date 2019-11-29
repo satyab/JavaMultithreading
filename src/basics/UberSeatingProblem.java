@@ -1,3 +1,5 @@
+package basics;
+
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.BrokenBarrierException;
@@ -5,7 +7,7 @@ import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.locks.ReentrantLock;
 /*
-public class UberSeatingProblem {
+public class basics.UberSeatingProblem {
 
   CyclicBarrier barrier = new CyclicBarrier(4);
   ReentrantLock lock = new ReentrantLock();
@@ -15,12 +17,12 @@ public class UberSeatingProblem {
   private Semaphore repubsWaiting = new Semaphore(0);
 
   public static void main(String args[]) throws InterruptedException {
-    UberSeatingProblem.runTest();
+    basics.UberSeatingProblem.runTest();
   }
 
   public static void runTest() throws InterruptedException {
 
-    final UberSeatingProblem uberSeatingProblem = new UberSeatingProblem();
+    final basics.UberSeatingProblem uberSeatingProblem = new basics.UberSeatingProblem();
     Set<Thread> allThreads = new HashSet<Thread>();
 
     for (int i = 0; i < 10; i++) {

@@ -1,3 +1,5 @@
+package basics;
+
 import java.util.concurrent.RecursiveAction;
 
 public class SumRecursive {

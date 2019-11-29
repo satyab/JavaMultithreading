@@ -1,3 +1,5 @@
+package basics;
+
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.PriorityQueue;

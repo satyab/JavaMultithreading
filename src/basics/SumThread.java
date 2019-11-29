@@ -1,3 +1,5 @@
+package basics;
+
 public class SumThread {
 
   public static void main(String[] args) throws InterruptedException {

@@ -1,3 +1,5 @@
+package basics;
+
 public class ReadWriteLockProblem {
   public static void main(String args[]) throws Exception {
 

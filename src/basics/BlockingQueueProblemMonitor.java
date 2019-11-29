@@ -1,10 +1,9 @@
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
+package basics;
 
-public class BlockingQueueProblemMutex {
+public class BlockingQueueProblemMonitor {
 
   public static void main(String[] args) throws InterruptedException {
-    BlockingQueueBusyWait<Integer> queue = new BlockingQueueBusyWait<Integer>(5);
+    BlockingQueue<Integer> queue = new BlockingQueue<Integer>(5);
 
     Thread t1 = new Thread(() -> {
       for (int i = 0; i < 50; i++) {
@@ -50,60 +49,58 @@ public class BlockingQueueProblemMutex {
   }
 }
 
-class BlockingQueueBusyWait<T> {
+class BlockingQueue<T> {
 
   T[] queue;
   int head = 0;
   int tail = 0;
   int size = 0;
   int capacity;
-  Lock lock = new ReentrantLock();
+  Object lock = new Object();
 
-  public BlockingQueueBusyWait(int capacity) {
+  public BlockingQueue(int capacity) {
     queue = (T[]) new Object[capacity];
     this.capacity = capacity;
   }
 
   public void enqueue(T item) throws InterruptedException {
 
-    lock.lock();
-    while (size == capacity) {
-      lock.unlock();
-      lock.lock();
+    synchronized (lock) {
+      while (size == capacity) {
+        lock.wait();
+      }
+
+      if (tail == capacity) {
+        tail = 0;
+      }
+
+      queue[tail] = item;
+      size++;
+      tail++;
+
+      lock.notifyAll();
     }
-
-    if (tail == capacity) {
-      tail = 0;
-    }
-
-    queue[tail] = item;
-    size++;
-    tail++;
-
-    lock.unlock();
-
   }
 
   public T deque() throws InterruptedException {
 
     T item = null;
-    lock.lock();
-    while (size == 0) {
-      lock.unlock();
-      lock.lock();
+    synchronized (lock) {
+      while (size == 0) {
+        lock.wait();
+      }
+
+      if (head == capacity) {
+        head = 0;
+      }
+
+      item = queue[head];
+      queue[head] = null;
+      head++;
+      size--;
+
+      lock.notifyAll();
     }
-
-    if (head == capacity) {
-      head = 0;
-    }
-
-    item = queue[head];
-    queue[head] = null;
-    head++;
-    size--;
-
-    lock.unlock();
-
     return item;
   }
 }
